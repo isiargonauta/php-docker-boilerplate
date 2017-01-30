@@ -8,13 +8,22 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.config.sh"
 
 if [ "$#" -lt 1 ]; then
-    echo "No project type defined (either cms, neos, symfony or git)"
+    echo "No project type defined (either symfony_new, symfony, git)"
     exit 1
 fi
 
 #if app dir exists then backup it with timestamp
-[ ! -d "$CODE_DIR" ] || mv "$CODE_DIR" "$CODE_DIR".$(date +%Y%m%d%H%M%S);
-
+if [ -d "$CODE_DIR" ]
+then
+#    if  execInDir "$CODE_DIR" "git remote"
+#    then
+#        $(execInDir "$CODE_DIR" "git remote -v | head -n1 | awk '{print \$2}' | sed -e 's,.*:\(.*/\)\?,,' -e 's/\.git$//'")
+#        echo mv "$CODE_DIR" "$CODE_DIR".$?.$(date +%Y%m%d%H%M%S)
+#    else
+#        echo mv "$CODE_DIR" "$CODE_DIR".$(date +%Y%m%d%H%M%S)
+#    fi
+    mv "$CODE_DIR" "$CODE_DIR".$(date +%Y%m%d%H%M%S)
+fi
 mkdir -p -- "$CODE_DIR/"
 chmod 777 "$CODE_DIR/"
 
@@ -22,14 +31,31 @@ rm -f -- "$CODE_DIR/.gitkeep"
 
 case "$1" in
     ###################################
-    ## SYMFONY
+    ## SYMFONY NEW
     ###################################
-    "symfony")
+    "symfony_new")
         curl -LsS http://symfony.com/installer > /tmp/symfony.$$.phar
         execInDir "$CODE_DIR" "php /tmp/symfony.$$.phar new '$CODE_DIR'"
         rm -f -- /tmp/symfony.$$.phar
         ;;
 
+    ###################################
+    ## SYMFONY
+    ###################################
+    "symfony")
+        if [ "$#" -lt 2 ]; then
+            echo "Missing git url"
+            exit 1
+        fi
+        git clone --recursive "$2" "$CODE_DIR"
+        curl -LsS https://getcomposer.org/installer > /tmp/installer.$$.phar
+        execInDir "$CODE_DIR" "php /tmp/installer.$$.phar"
+        rm -f -- /tmp/installer.$$.phar
+        execInDir "$CODE_DIR" "php composer.phar install"
+        [ -d "${CODE_DIR}/app/logs" ] || mkdir -p "${CODE_DIR}/app/logs"
+        [ -d "${CODE_DIR}/app/cache" ] || mkdir -p "${CODE_DIR}/app/cache"
+        ;;
+        
     ###################################
     ## GIT
     ###################################
