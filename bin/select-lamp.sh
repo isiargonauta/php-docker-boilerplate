@@ -22,9 +22,9 @@ fi
 #######################################################
 
 [ -f "${ROOT_DIR}/Dockerfile.development.$1.$2" ] || { echo "Dockerfile.development.$1.$2 NOT FOUND" ; exit 1 ;}
-[ -f "${ROOT_DIR}/docker-compose.development.$1.$2" ] || { echo "docker-compose.development.$1.$2 NOT FOUND" ; exit 1 ;}
+[ -f "${ROOT_DIR}/docker-compose.development.$1.$2.yml" ] || { echo "docker-compose.development.$1.$2 NOT FOUND" ; exit 1 ;}
 
 logMsg "Enabling conf for $1 $2 ..."
 ln -bs "${ROOT_DIR}/Dockerfile.development.$1.$2" "${ROOT_DIR}/Dockerfile"
-ln -bs "${ROOT_DIR}/docker-compose.development.$1.$2" "${ROOT_DIR}/docker-compose.yml"
+ln -bs "${ROOT_DIR}/docker-compose.development.$1.$2.yml" "${ROOT_DIR}/docker-compose.yml"
 logMsg "Finished. Go ahead with make create project."
