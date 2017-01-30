@@ -51,7 +51,6 @@ case "$1" in
         curl -LsS https://getcomposer.org/installer > /tmp/installer.$$.phar
         execInDir "$CODE_DIR" "php /tmp/installer.$$.phar"
         rm -f -- /tmp/installer.$$.phar
-        execInDir "$CODE_DIR" "php composer.phar install"
         [ -d "${CODE_DIR}/app/logs" ] || mkdir -p "${CODE_DIR}/app/logs"
         [ -d "${CODE_DIR}/app/cache" ] || mkdir -p "${CODE_DIR}/app/cache"
         ;;
