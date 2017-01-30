@@ -29,4 +29,10 @@ logMsg "Enabling conf for $1 $2 ..."
 cp -b "${ROOT_DIR}/Dockerfile.development.$1.$2" "${ROOT_DIR}/Dockerfile"
 cp -b "${ROOT_DIR}/docker-compose.development.$1.$2.yml" "${ROOT_DIR}/docker-compose.yml"
 cp -b "${ROOT_DIR}/etc/environment.development.$1.$2.yml" "${ROOT_DIR}/etc/environment.yml"
+=======
+[ -f "${ROOT_DIR}/docker-compose.development.$1.$2.yml" ] || { echo "docker-compose.development.$1.$2 NOT FOUND" ; exit 1 ;}
+
+logMsg "Enabling conf for $1 $2 ..."
+ln -bs "${ROOT_DIR}/Dockerfile.development.$1.$2" "${ROOT_DIR}/Dockerfile"
+ln -bs "${ROOT_DIR}/docker-compose.development.$1.$2.yml" "${ROOT_DIR}/docker-compose.yml"
 logMsg "Finished. Go ahead with make create project."
