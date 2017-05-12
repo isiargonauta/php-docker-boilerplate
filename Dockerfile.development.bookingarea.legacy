@@ -1,0 +1,27 @@
+#++++++++++++++++++++++++++++++++++++++
+# PHP application Docker container
+#++++++++++++++++++++++++++++++++++++++
+FROM webdevops/php-apache-dev:debian-8
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+       php5-mcrypt \
+       php5-gd \
+       php5-curl \
+       php5-mysql \
+       php5-xdebug \
+     && rm -rf /var/lib/apt/lists/*     
+
+ENV PROVISION_CONTEXT "development"
+
+# Deploy scripts/configurations
+COPY etc/             /opt/docker/etc/
+COPY provision/       /opt/docker/provision/
+
+RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment \
+    && /opt/docker/bin/bootstrap.sh
+
+# Configure volume/workdir
+RUN mkdir -p /app
+RUN mkdir -p /var/www/bookingarea.com
+RUN ln -s /app /var/www/bookingarea.com/public
+WORKDIR /app/
