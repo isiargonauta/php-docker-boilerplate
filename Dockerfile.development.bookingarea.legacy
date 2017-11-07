@@ -18,7 +18,7 @@ ENV PROVISION_CONTEXT "development"
 COPY etc/             /opt/docker/etc/
 COPY provision/       /opt/docker/provision/
 
-RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment \
+RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment --role spanish-webserver\
     && /opt/docker/bin/bootstrap.sh
 
 # Configure volume/workdir
