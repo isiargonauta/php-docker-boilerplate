@@ -25,7 +25,7 @@
   ServerName "{{ vhost.serverName }}"
   ServerAlias "{{ vhost.serverAlias }}"
   DocumentRoot "{{ vhost.documentRoot|default('<DOCUMENT_ROOT>') }}"
-  AddDefaultCharset "{{ vhost.charset|default('UTF-8') }}"
+  AddDefaultCharset "{{ WEB_CHARSET|default('UTF-8') }}"
 
   UseCanonicalName Off
 

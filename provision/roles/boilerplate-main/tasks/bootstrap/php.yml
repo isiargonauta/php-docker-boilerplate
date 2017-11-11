@@ -36,13 +36,29 @@
    - { key: 'daemonize', value: 'no' }
   when: phpFpmConf.stat.exists is defined and phpFpmConf.stat.exists
 
+- name: Set development environment php.ini for spanish server
+  file:
+    src:  '/opt/docker/etc/php/development_spanish.ini'
+    dest: '/opt/docker/etc/php/php.ini'
+    state: link
+    force: yes
+  when: PROVISION_CONTEXT == "development" and WEB_CHARSET == "ISO-8859-1"
+
+- name: Enable production environment php.ini for spanish webserver
+  file:
+    src:  '/opt/docker/etc/php/production_spanish.ini'
+    dest: '/opt/docker/etc/php/php.ini'
+    state: link
+    force: yes
+  when: (PROVISION_CONTEXT == "production" or PROVISION_CONTEXT == "") and WEB_CHARSET == "ISO-8859-1"
+
 - name: Set development environment php.ini
   file:
     src:  '/opt/docker/etc/php/development.ini'
     dest: '/opt/docker/etc/php/php.ini'
     state: link
     force: yes
-  when: PROVISION_CONTEXT == "development"
+  when: PROVISION_CONTEXT == "development" and WEB_CHARSET != "ISO-8859-1"
 
 - name: Enable production environment php.ini
   file:
@@ -50,4 +66,4 @@
     dest: '/opt/docker/etc/php/php.ini'
     state: link
     force: yes
-  when: PROVISION_CONTEXT == "production" or PROVISION_CONTEXT == ""
+  when: (PROVISION_CONTEXT == "production" or PROVISION_CONTEXT == "") and WEB_CHARSET != "ISO-8859-1"
