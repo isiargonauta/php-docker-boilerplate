@@ -12,6 +12,7 @@
 # General
 WEB_DOCUMENT_ROOT=/app/web/
 WEB_DOCUMENT_INDEX=app_dev.php
+WEB_CHARSET=ISO-8859-1
 CLI_SCRIPT="php /app/index.php"
 
 #######################################
